@@ -1,12 +1,11 @@
 '''This is the code for the program to run with a flask gui'''
 import random
-from pylint.lint import Run
+
 from flask import Flask,render_template, request,jsonify,session
 import components
 import game_engine
 
-results = Run(['/Users/alex/Desktop/programming coursework 2/flask_game_engine.py'],exit = False)
-print(results.linter.stats.global_note)
+
 
 
 
