@@ -1,9 +1,5 @@
 '''This is the the components file which contains some of the key functions'''
 
-from pylint.lint import Run
-
-results = Run(['/Users/alex/Desktop/programming coursework 2/components.py'],exit = False)
-print(results.linter.stats.global_note)
 
 #This is the function that initialises the board and
 # creates the inital setup of the board.
