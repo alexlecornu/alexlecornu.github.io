@@ -1,10 +1,9 @@
 '''This is the game engine file that allows the game to run in command line'''
-from pylint.lint import Run
+
 import components
 
 
-results = Run(['/Users/alex/Desktop/programming coursework 2/game_engine.py'],exit = False)
-print(results.linter.stats.global_note)
+
 
 def cli_coords_input():
     '''This function allows the user to enter the coordinates'''
