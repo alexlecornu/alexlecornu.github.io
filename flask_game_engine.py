@@ -112,7 +112,7 @@ def ai_move(board, colour = "Light"):
             # updates the colour
             session["colour"] = colour
             # returns the move and the new board
-            return ({"move":move,"board":board})
+            return ({"move": None,"board":board})
     else:
         # if the moves available is 0 then it switches the colour back to black
         session["colour"] = "Dark "
