@@ -1,11 +1,8 @@
 '''This is the code for the program to run with a flask gui'''
 import random
-
 from flask import Flask,render_template, request,jsonify,session
 import components
 import game_engine
-
-
 
 
 
@@ -29,7 +26,7 @@ def index():
 
 @app.route("/move")
 def player_move():
-    '''gets the board and colour from the session, sets the move counter'''
+    '''gets the board and colour from the session'''
     colour = session.get("colour")
     board = session.get("board")
     # checks to make sure the board and colour have a value, if not it returns an error
@@ -46,7 +43,8 @@ def player_move():
             endgame = game_end_counter(board)
             loop = False
             return jsonify({'finished':f"Game over, {endgame[0]} ","board":board})
-        if colour == "Dark " and len(game_engine.valid_moves(colour,board)) == 0:
+
+        elif colour == "Dark " and len(game_engine.valid_moves(colour,board)) == 0:
             colour = "Light"
             session["colour"] = colour
             return jsonify({"status":"fail",'message':
@@ -74,12 +72,14 @@ def player_move():
                 # returns a message saying success if the move is valid
                 return jsonify({"status":"success","board":board,
                                 "colour":colour, "ai_board":ai_result["board"],
-                                "ai_move":ai_result["move"]})    
+                                "ai_move":ai_result["move"]})   
             else:
                 # returns an error saying illegal move if it is illegel
                 return jsonify({"status":"fail",'message':"illegal move."})
         else:
             ai_result = ai_move(board)
+            session["board"] = board
+            session["colour"] = "Dark "
             return jsonify({"status":"success","board":board,
                                 "colour":colour, "ai_board":ai_result["board"],
                                 "ai_move":ai_result["move"]}) 
@@ -97,6 +97,7 @@ def ai_move(board, colour = "Light"):
         # as no descison making is used to make sure the moves are the best
         index_val = random.randint(0,len(available_moves)-1)
         move = available_moves[index_val]
+
         # varifies that the move is legal and then changes the tiles
         state,tiles = components.legal_move(colour,move,board)
         if state:
@@ -112,13 +113,13 @@ def ai_move(board, colour = "Light"):
             # updates the colour
             session["colour"] = colour
             # returns the move and the new board
-            return ({"move": None,"board":board})
+            return ({"move":move,"board":board})
     else:
         # if the moves available is 0 then it switches the colour back to black
         session["colour"] = "Dark "
         session["board"] = board
-        # returns an appropriate error message and displays the move
-        return {"move":move,"board":board}
+
+        return {"move":None,"board":board}
 
 def game_end_counter(board, size = 8):
     '''This function is used when the game ends to count the number
@@ -133,7 +134,7 @@ def game_end_counter(board, size = 8):
         while j < size:
             if board[j][i] == "Dark ":
                 dark += 1
-            else:
+            elif board[j][i] == "Light":
                 light += 1
             j+=1
         i+=1

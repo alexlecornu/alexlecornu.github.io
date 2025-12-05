@@ -1,6 +1,5 @@
 '''This is the the components file which contains some of the key functions'''
 
-
 #This is the function that initialises the board and
 # creates the inital setup of the board.
 # It adds the starting white and black tiles
@@ -12,23 +11,35 @@ def initialise_board(size=8):
     # these set the inital valus for the board and the num which is used in the while loop
     while num < size:
         sub_list = ["None "] * size
-        # creates the list full of the value "None "
-        if num == 3:
-            sub_list[3] = "Light"
-            sub_list[4] = "Dark "
-        # this changes the values to light and dark in the 4th row down
-        if num == 4:
-            sub_list[3] = "Dark "
-            sub_list[4] = "Light"
-        # this changes the values to light and dark in the 5th row
+        # creates the inital sublist which can then be added to the board
+        # initially every value is "None "
         board.append(sub_list)
+        # Incremented by 1 to do the next sublist
         num+=1
+    # finds one less than half the value of the size
+    mid1 = size // 2 - 1
+    #finds half the value of the size
+    mid2 = size // 2
+    #changes the individual squares on the board using the
+    #values calculated above
+    board[mid1][mid1] = "Light"
+    board[mid2][mid1] = "Dark "
+    board[mid1][mid2] = "Dark "
+    board[mid2][mid2] = "Light"
+
+    #returns the completed board
     return board
 
-def print_board(board):
+def print_board(board,size=8):
     '''This iterates through the board list and prints each sublist on a new line'''
     # initial heading for the board
-    print("  |   0   |   1    |   2    |   3    |   4    |   5    |   6    |   7    |")
+    heading = "  "
+    # allows the board to have different dimentions by chnaging the heading
+    # depending on the size of the board
+    for i in range(size):
+        heading = heading + f"|   {i}    "
+
+    print(heading)
     # iterates through the board line by line printing the sublist on a new line
     for i,sub_list in enumerate(board):
         print(i,sub_list)

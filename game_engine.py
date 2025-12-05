@@ -1,11 +1,7 @@
 '''This is the game engine file that allows the game to run in command line'''
-
 import components
 
-
-
-
-def cli_coords_input():
+def cli_coords_input(size=8):
     '''This function allows the user to enter the coordinates'''
     # sets the loop to be true
     loop = True
@@ -14,9 +10,9 @@ def cli_coords_input():
         x = int(input("Enter the x coordinate: "))
         y = int(input("Enter the y coordinate: "))
         # validates the inputs making sure they are within the allowed range
-        if x < 0 or x > 7:
+        if x < 0 or x > size-1:
             print("Invalid x")
-        elif y < 0 or y > 7:
+        elif y < 0 or y > size-1:
             print("Invalid y")
         else:
             # if the coordinates are valid the loop is false and the while loop stops
@@ -37,18 +33,19 @@ def simple_game_loop():
     # main loop for the game, uses the number of moves as a counter
     # and counts down until no moves remain
     while move_counter > 0:
+        # checks to see if there are moves avaiable for light and dark, ends the game if not
+        if len(valid_moves("Dark ",board)) ==0 and len(valid_moves("Light",board)) == 0:
+            print("Game Over!")
+            game_end_counter(board)
+            break
         # checks if there are moves available for dark, if not it switches to white
-        if colour == "Dark " and len(valid_moves(colour,board)) == 0:
+        elif colour == "Dark " and len(valid_moves(colour,board)) == 0:
             colour = "Light"
             print("No available moves for Dark, switching to light")
         # checks if there are moves available for light, if not switches to dark
         elif colour == "Light" and len(valid_moves(colour,board)) == 0:
             colour = "Dark "
             print("No available moves for Light, switching to Dark ")
-        # checks to see if there are moves avaiable for light and dark, ends the game if not
-        if len(valid_moves("Dark ",board)) ==0 and len(valid_moves("Light",board)) == 0:
-            print("Game Over!")
-            game_end_counter(board)
             #shows whose turn it is, prints all the valid moves available
         print(f"It is {colour}'s turn")
         print(f'The valid moves are: {valid_moves(colour,board)}')
@@ -108,7 +105,7 @@ def game_end_counter(board, size = 8):
         while j < size:
             if board[j][i] == "Dark ":
                 dark += 1
-            else:
+            elif board[j][i] == "Light":
                 light += 1
             j+=1
         i+=1
