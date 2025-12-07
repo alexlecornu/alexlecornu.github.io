@@ -2,7 +2,7 @@
 
 ### Components flowcharts:
 
-I created the inital components module with lots of the main python code used for running the game. This includes 4 of the main functions needed to run the program.
+I created the inital components module with all of the python  code used for running the game. This includes 4 of the main functions needed to run the program.
 
 #### initialise_board function
 
